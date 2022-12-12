@@ -1,0 +1,62 @@
+﻿@page "/"
+@page "/crypto"
+
+<PageTitle>SSM - Crypto</PageTitle>
+
+<MudGrid Justify="Justify.SpaceEvenly" Style="width: 99%">
+    <MudItem xs="11" lg="4">
+        <MudSelect Class="flex-1"
+                   @bind-Value="selectedCurrency"
+                   @bind-Value:after="ReloadDataAsync">
+            @foreach (var cryptoCurrency in cryptoCurrencies)
+            {
+                <MudSelectItem Value="cryptoCurrency.Code">
+                    <img src="@cryptoCurrency.ImageSrc" height="14" class="mr-1" />
+                    @cryptoCurrency.Name
+                </MudSelectItem>
+            }
+        </MudSelect>
+        
+        <MudNumericField Class="flex-1 mt-2"
+                         Label="# of points to render"
+                         @bind-Value="selectedNrOfPointsToShow"
+                         @bind-Value:after="FilterCryptoTrendsAsync"
+                         Disabled="isLoading"
+                         Min="0"
+                         Max="maxNrOfPointsToShow" />
+
+        <MudPaper Class="flex-1 mt-2" Elevation="0">
+            <ValueTrendComponent CurrentValues="GetCurrentValuesContainer()"
+                                 PreviousValues="GetPreviousValuesContainer()"
+                                 Currency=currency />
+        </MudPaper>
+    </MudItem>
+@if (isLoading)
+{
+    <MudItem xs="11" lg="7">
+        <MudCard Height="500px">
+            <MudProgressCircular Style="height:70px;width:70px;"
+                                 Color="MudBlazor.Color.Dark"
+                                 Indeterminate="true" />
+            </MudCard>
+    </MudItem>
+}
+else
+{
+    <MudItem xs="11" lg="7">
+        <ApexChart Height="500"
+                   @ref="chart"
+                   Options="options"
+                   TItem="CryptoTrendValuesContainer"
+                   XAxisType="XAxisType.Datetime">        
+            <ApexPointSeries TItem="CryptoTrendValuesContainer"
+                             Items="filteredCryptoTrends"
+                             Name="@selectedCurrency"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(e => e.Date)"
+                             YAggregate="@(e => (decimal)e.Sum(e => e.Values.CloseOther))"
+                             OrderBy="e=>e.X" />
+        </ApexChart>
+    </MudItem>
+}
+</MudGrid>
