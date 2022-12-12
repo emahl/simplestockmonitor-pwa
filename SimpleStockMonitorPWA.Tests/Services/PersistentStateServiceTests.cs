@@ -1,4 +1,4 @@
-﻿namespace SimpleStockMonitorPWA.Tests;
+﻿namespace SimpleStockMonitorPWA.Tests.Services;
 
 public class PersistentStateServiceTests
 {
@@ -6,7 +6,7 @@ public class PersistentStateServiceTests
     private const string OtherCacheKey = "otherKey";
     private PersistentStateService? _sut;
 
-    [TestCase]
+    [Test]
     public async Task Should_return_value_from_cache_if_it_exists()
     {
         // Arrange
@@ -30,7 +30,7 @@ public class PersistentStateServiceTests
         });
     }
 
-    [TestCase]
+    [Test]
     public async Task Should_execute_action_when_value_doesnt_exist_in_cache()
     {
         // Arrange
@@ -50,7 +50,7 @@ public class PersistentStateServiceTests
         });
     }
 
-    [TestCase]
+    [Test]
     public async Task Should_execute_action_when_value_exists_in_cache_but_has_expired()
     {
         // Arrange
@@ -64,7 +64,7 @@ public class PersistentStateServiceTests
         // Act
         var value = await _sut.GetOrCreateAsync(CacheKey,
             () => { actionCalled++; return Task.FromResult(2); });
-        
+
         // Assert
         Assert.Multiple(() =>
         {

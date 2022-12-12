@@ -20,8 +20,17 @@ public partial class ValueTrendComponent
         return _currencyFormattingService!.FormatValueWithCurrency(value, Currency);
     }
 
-    private Trend GetCurrentTrend() => _cryptoTrendValueService!.GetCurrentTrend(CurrentValues, PreviousValues, Currency);
-    
+    private Trend GetCurrentTrend() =>
+        _cryptoTrendValueService!.GetCurrentTrend(CurrentValues, PreviousValues, Currency);
+
+    private string GetTrendTitle() => GetCurrentTrend() switch
+    {
+        Trend.Flat => "trend-flat",
+        Trend.Up => "trend-up",
+        Trend.Down => "trend-down",
+        _ => throw new NotImplementedException()
+    };
+
     private string GetTrendIcon() => GetCurrentTrend() switch
     {
         Trend.Flat => @Icons.Filled.TrendingFlat,
@@ -30,11 +39,11 @@ public partial class ValueTrendComponent
         _ => throw new NotImplementedException()
     };
 
-    private MudBlazor.Color GetTrendColor() => GetCurrentTrend() switch
+    private Color GetTrendColor() => GetCurrentTrend() switch
     {
-        Trend.Flat => MudBlazor.Color.Dark,
-        Trend.Up => MudBlazor.Color.Success,
-        Trend.Down => MudBlazor.Color.Error,
+        Trend.Flat => Color.Dark,
+        Trend.Up => Color.Success,
+        Trend.Down => Color.Error,
         _ => throw new NotImplementedException()
     };
 }

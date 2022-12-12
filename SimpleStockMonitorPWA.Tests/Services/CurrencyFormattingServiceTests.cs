@@ -1,4 +1,4 @@
-﻿namespace SimpleStockMonitorPWA.Tests;
+﻿namespace SimpleStockMonitorPWA.Tests.Services;
 
 public class CurrencyFormattingServiceTests
 {
