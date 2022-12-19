@@ -21,11 +21,12 @@ public partial class CryptoTab
     private readonly List<CryptoCurrencyOption> cryptoCurrencies = new()
     {
         new("BTC", "Bitcoin", "https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg"),
-        new("ETH", "Ethereum", "https://upload.wikimedia.org/wikipedia/commons/0/05/Ethereum_logo_2014.svg"), new("DOGE", "Dogecoin", "https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png")
+        new("ETH", "Ethereum", "https://upload.wikimedia.org/wikipedia/commons/0/05/Ethereum_logo_2014.svg"),
+        new("DOGE", "Dogecoin", "https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png")
     };
     
     private bool isLoading = true;
-    private int selectedNrOfPointsToShow = 100;
+    private int selectedNrOfPointsToShow = 20;
     private int maxNrOfPointsToShow = 200;
     private TrendInterval trendInterval = TrendInterval.Weekly;
     private Currency currency = Currency.USD;
