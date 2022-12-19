@@ -24,7 +24,7 @@ public class ValueTrendComponentTests
 
         // Assert
         var valueText = cut.Find(".main-value").TextContent;
-        Assert.That(valueText, Is.EqualTo("0 $"));
+        Assert.That(valueText, Is.EqualTo("$ 0"));
     }
 
     [Test]
@@ -52,7 +52,7 @@ public class ValueTrendComponentTests
 
         // Assert
         var valueText = cut.Find(".main-value").TextContent;
-        Assert.That(valueText, Is.EqualTo("100,00 $"));
+        Assert.That(valueText, Is.EqualTo("$ 100,00"));
     }
 
     [Test]

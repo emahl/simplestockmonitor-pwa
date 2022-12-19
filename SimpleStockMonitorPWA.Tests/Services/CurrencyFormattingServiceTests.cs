@@ -74,7 +74,7 @@ public class CurrencyFormattingServiceTests
     }
 
     [Test]
-    public void Format_value_USD_should_place_currency_sign_after()
+    public void Format_value_USD_should_place_currency_sign_before()
     {
         // Arrange
         var value = 123.456;
@@ -83,7 +83,7 @@ public class CurrencyFormattingServiceTests
         // Act
         var formatted = _sut.FormatValueWithCurrency(value, currency);
 
-        Assert.That(formatted, Is.EqualTo("123,46 $"));
+        Assert.That(formatted, Is.EqualTo("$ 123,46"));
     }
 
     [Test]

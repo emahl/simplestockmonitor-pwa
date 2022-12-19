@@ -53,6 +53,5 @@ public class CurrencyFormattingService : ICurrencyFormattingService
     }
 
     private static bool IsCurrencySignAfterValue(Currency currency) =>
-    currency is Currency.USD or Currency.SEK;
-
+        currency is Currency.SEK;
 }
