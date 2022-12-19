@@ -28,7 +28,7 @@ public partial class CryptoTab
     private int selectedNrOfPointsToShow = 100;
     private int maxNrOfPointsToShow = 200;
     private TrendInterval trendInterval = TrendInterval.Weekly;
-    private Currency currency = Currency.SEK;
+    private Currency currency = Currency.USD;
     private string selectedCurrency = "BTC";
     
     protected async override Task OnInitializedAsync()
@@ -41,7 +41,7 @@ public partial class CryptoTab
     {
         isLoading = true;
         
-        var cryptoData = (await _apiService!.GetCryptoCurrencyTrendAsync(selectedCurrency, trendInterval)).ToList();
+        var cryptoData = (await _apiService!.GetCryptoCurrencyTrendAsync(selectedCurrency, trendInterval, currency)).ToList();
         
         allCryptoTrends = cryptoData;
         maxNrOfPointsToShow = allCryptoTrends.Count();

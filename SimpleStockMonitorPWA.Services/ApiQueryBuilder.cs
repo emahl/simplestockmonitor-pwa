@@ -6,7 +6,7 @@ public interface IApiQueryBuilder
 {
     IApiQueryBuilder SetInterval(TrendInterval interval);
     IApiQueryBuilder SetSymbol(string symbol);
-    IApiQueryBuilder SetMarket(string market);
+    IApiQueryBuilder SetMarketCurrency(Currency marketCurrency);
     IApiQueryBuilder SetApiKey(string apiKey);
     string BuildQuery();
 }
@@ -54,10 +54,22 @@ public class ApiQueryBuilder : IApiQueryBuilder
         };
     }
 
-    public IApiQueryBuilder SetMarket(string market)
+    public IApiQueryBuilder SetMarketCurrency(Currency marketCurrency)
     {
-        _market = market;
+
+        _market = GetMarketFromCurrency(marketCurrency);
         return this;
+    }
+
+    private static string GetMarketFromCurrency(Currency currency)
+    {
+        return currency switch
+        {
+            Currency.USD => "USD",
+            Currency.EUR => "EUR",
+            Currency.SEK => "SEK",
+            _ => throw new NotImplementedException()
+        };
     }
 
     public IApiQueryBuilder SetSymbol(string symbol)

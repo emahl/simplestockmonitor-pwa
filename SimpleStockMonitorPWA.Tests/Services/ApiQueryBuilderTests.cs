@@ -4,9 +4,9 @@ public class ApiQueryBuilderTests
 {
     private ApiQueryBuilder _sut;
     private const string ApiKey = "APIKEY_TEST";
-    private const string Market = "MARKET_TEST";
     private const string Symbol = "SYMBOL_TEST";
-    private readonly (string Function, TrendInterval Interval) DailyFunctionInterval = ("DIGITAL_CURRENCY_DAILY", TrendInterval.Daily);
+    private const Currency USDCurrency = Currency.USD;
+    private readonly TrendInterval DailyFunctionInterval = TrendInterval.Daily;
 
     [SetUp]
     public void Setup()
@@ -21,8 +21,8 @@ public class ApiQueryBuilderTests
         var query = _sut
             .SetApiKey(ApiKey)
             .SetSymbol(Symbol)
-            .SetMarket(Market)
-            .SetInterval(DailyFunctionInterval.Interval)
+            .SetMarketCurrency(USDCurrency)
+            .SetInterval(DailyFunctionInterval)
             .BuildQuery();
 
         // Assert
@@ -34,8 +34,8 @@ public class ApiQueryBuilderTests
     {
         // Arrange, Act
         var exception = Assert.Throws<Exception>(() => _sut
-            .SetInterval(DailyFunctionInterval.Interval)
-            .SetMarket(Market)
+            .SetInterval(DailyFunctionInterval)
+            .SetMarketCurrency(USDCurrency)
             .SetSymbol(Symbol)
             .BuildQuery());
 
@@ -49,7 +49,7 @@ public class ApiQueryBuilderTests
         // Arrange, Act
         var exception = Assert.Throws<Exception>(() => _sut
             .SetApiKey(ApiKey)
-            .SetMarket(Market)
+            .SetMarketCurrency(USDCurrency)
             .SetSymbol(Symbol)
             .BuildQuery());
 
@@ -63,7 +63,7 @@ public class ApiQueryBuilderTests
         // Arrange, Act
         var exception = Assert.Throws<Exception>(() => _sut
             .SetApiKey(ApiKey)
-            .SetInterval(DailyFunctionInterval.Interval)
+            .SetInterval(DailyFunctionInterval)
             .SetSymbol(Symbol)
             .BuildQuery());
 
@@ -77,8 +77,8 @@ public class ApiQueryBuilderTests
         // Arrange, Act
         var exception = Assert.Throws<Exception>(() => _sut
             .SetApiKey(ApiKey)
-            .SetInterval(DailyFunctionInterval.Interval)
-            .SetMarket(Market)
+            .SetInterval(DailyFunctionInterval)
+            .SetMarketCurrency(USDCurrency)
             .BuildQuery());
 
         // Assert
@@ -94,11 +94,28 @@ public class ApiQueryBuilderTests
         var query = _sut
             .SetApiKey(ApiKey)
             .SetSymbol(Symbol)
-            .SetMarket(Market)
+            .SetMarketCurrency(USDCurrency)
             .SetInterval(interval)
             .BuildQuery();
 
         // Assert
         Assert.That(query, Does.Contain(expectedFunction));
+    }
+
+    [TestCase(Currency.USD, "USD")]
+    [TestCase(Currency.EUR, "EUR")]
+    [TestCase(Currency.SEK, "SEK")]
+    public void Should_convert_currency_to_correct_market(Currency currency, string expectedMarket)
+    {
+        // Arrange, Act
+        var query = _sut
+            .SetApiKey(ApiKey)
+            .SetSymbol(Symbol)
+            .SetInterval(DailyFunctionInterval)
+            .SetMarketCurrency(currency)
+            .BuildQuery();
+
+        // Assert
+        Assert.That(query, Does.Contain(expectedMarket));
     }
 }

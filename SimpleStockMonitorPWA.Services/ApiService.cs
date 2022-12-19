@@ -5,7 +5,8 @@ namespace SimpleStockMonitorPWA.Services;
 
 public interface IApiService
 {
-     Task<IEnumerable<CryptoTrendValuesContainer>> GetCryptoCurrencyTrendAsync(string cryptoCurrencyCode, TrendInterval trendInterval);
+     Task<IEnumerable<CryptoTrendValuesContainer>> GetCryptoCurrencyTrendAsync(
+         string cryptoCurrencyCode, TrendInterval trendInterval, Currency marketCurrency);
 }
 
 public class ApiService : IApiService
@@ -28,17 +29,19 @@ public class ApiService : IApiService
     }
 
     public async Task<IEnumerable<CryptoTrendValuesContainer>> GetCryptoCurrencyTrendAsync(
-        string cryptoCurrencyCode, TrendInterval trendInterval)
+        string cryptoCurrencyCode, TrendInterval trendInterval, Currency marketCurrency)
     {
         var query = _queryBuilder
             .SetApiKey(_alphaVantageOptions.ApiKey!)
             .SetInterval(trendInterval)
             .SetSymbol(cryptoCurrencyCode)
-            .SetMarket("SEK")
+            .SetMarketCurrency(marketCurrency)
             .BuildQuery();
 
-        var responseString = await _cache.GetOrCreateAsync<string>(query, () => _httpClient.GetStringAsync(query));
+        var responseString = await _cache.GetOrCreateAsync(query, () => CallApi(query));
 
         return new ApiJsonConverter(responseString, trendInterval).ConvertToCryptoTrends();
     }
+
+    private async Task<string> CallApi(string query) => await _httpClient.GetStringAsync(query);
 }
