@@ -2,7 +2,7 @@
 
 public class PersistentStateService
 {
-    private const int DefaultExpirationTimeSeconds = 60;
+    private const int DefaultExpirationTimeSeconds = 300;
 
     private readonly Dictionary<string, (DateTime CreatedAt, object CachedValue)> _cache;
     private readonly int _expirationTimeSeconds;
@@ -22,6 +22,7 @@ public class PersistentStateService
         }
 
         var newValue = await factory();
+        _cache.Remove(key);
         _cache.Add(key, (DateTime.Now, newValue!));
         return newValue;
     }
