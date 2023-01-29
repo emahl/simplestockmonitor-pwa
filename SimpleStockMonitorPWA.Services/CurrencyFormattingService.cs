@@ -6,6 +6,7 @@ public interface ICurrencyFormattingService
 {
     string GetCurrencyUnitSymbol(Currency currency);
     string FormatValueWithCurrency(double value, Currency currency);
+    string GetFormattedValue(double value);
 }
 
 public class CurrencyFormattingService : ICurrencyFormattingService

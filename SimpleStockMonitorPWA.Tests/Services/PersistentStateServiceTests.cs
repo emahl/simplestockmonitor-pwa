@@ -20,7 +20,7 @@ public class PersistentStateServiceTests
 
         // Act
         var value = await _sut.GetOrCreateAsync(CacheKey,
-            () => { actionCalled++; return Task.FromResult(2); });
+            () => { actionCalled++; return Task.FromResult(999); });
 
         // Assert
         Assert.Multiple(() =>
@@ -40,13 +40,13 @@ public class PersistentStateServiceTests
 
         // Act
         var value = await _sut.GetOrCreateAsync(CacheKey,
-            () => { actionCalled++; return Task.FromResult(2); });
+            () => { actionCalled++; return Task.FromResult(999); });
 
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(actionCalled, Is.EqualTo(1));
-            Assert.That(value, Is.EqualTo(2));
+            Assert.That(value, Is.EqualTo(999));
         });
     }
 
@@ -63,13 +63,13 @@ public class PersistentStateServiceTests
 
         // Act
         var value = await _sut.GetOrCreateAsync(CacheKey,
-            () => { actionCalled++; return Task.FromResult(2); });
+            () => { actionCalled++; return Task.FromResult(999); });
 
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(actionCalled, Is.EqualTo(1));
-            Assert.That(value, Is.EqualTo(2));
+            Assert.That(value, Is.EqualTo(999));
         });
     }
 }

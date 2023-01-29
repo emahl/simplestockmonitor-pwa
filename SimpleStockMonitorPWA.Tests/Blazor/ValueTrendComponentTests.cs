@@ -20,7 +20,8 @@ public class ValueTrendComponentTests
     public void Should_display_no_value_as_zero_USD()
     {
         // Arrange, Act
-        var cut = _ctx.RenderComponent<ValueTrendComponent>();
+        var cut = _ctx.RenderComponent<ValueTrendComponent>(parameters => parameters
+            .Add(p => p.Currency, Currency.USD));
 
         // Assert
         var valueText = cut.Find(".main-value").TextContent;
@@ -59,7 +60,7 @@ public class ValueTrendComponentTests
     public void Should_display_the_current_main_value_formatted_in_SEK()
     {
         // Arrange
-        var currentValues = CreateMockValuesContainer("2022-12-31", 100);
+        var currentValues = CreateMockValuesContainer("2022-12-31", 1000);
 
         // Act
         var cut = _ctx.RenderComponent<ValueTrendComponent>(parameters => parameters
@@ -69,6 +70,23 @@ public class ValueTrendComponentTests
         // Assert
         var valueText = cut.Find(".main-value").TextContent;
         Assert.That(valueText, Is.EqualTo("1 000 kr"));
+    }
+
+    [Test]
+    public void Should_display_the_current_main_value_and_hide_previous_values()
+    {
+        // Arrange
+        var currentValues = CreateMockValuesContainer("2022-12-31", 123);
+        var previousValues = CreateMockValuesContainer("2022-12-30", 321);
+
+        // Act
+        var cut = _ctx.RenderComponent<ValueTrendComponent>(parameters => parameters
+            .Add(p => p.CurrentValues, currentValues)
+            .Add(p => p.PreviousValues, previousValues));
+
+        // Assert
+        var valueText = cut.Find(".main-value").TextContent;
+        Assert.That(valueText, Is.EqualTo("$ 123,00"));
     }
 
     [Test]
@@ -137,5 +155,5 @@ public class ValueTrendComponentTests
         new(DateOnly.Parse(date), CreateMockValues(value));
 
     private static CryptoValues CreateMockValues(double value) => 
-        new CryptoValues.Builder().AddCloseUSD(value).AddCloseOther(value * 10).Build();
+        new CryptoValues.Builder().AddCloseUSD(value).AddCloseOther(value).Build();
 }

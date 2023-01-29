@@ -20,7 +20,7 @@ public class ApiJsonConverterTests
 
     #region Helpers
     // Copied example json from https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=SEK&apikey=39OD3M30HJ0B5HWY
-    public string GetJsonForInterval(TrendInterval interval)
+    private static string GetJsonForInterval(TrendInterval interval)
     {
         return interval switch
         {
